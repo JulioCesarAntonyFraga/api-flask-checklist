@@ -11,10 +11,24 @@ from verificacoes import *
 from api_firebase import *
 from checklists import *
 from planos_de_acao import *
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 #credenciais aplicação
 app.config['SECRET_KEY'] = 'JDFH8HU8hf78dhn348fhpwuiyf8dfisdhy8fh34fhdfnf34h3lguihohr8efg3lhg8fbrlgb3o5blui5g975gh9elfkgi5ngby9jgepuilgh54bouigheor7ibutg5huhgevo89'
+
+### swagger specific ###
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Auto Checklist"
+    }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+### end swagger specific ###
 
 ##################AUTH FIREBASE E TOKEN###################
 def token_required(f):

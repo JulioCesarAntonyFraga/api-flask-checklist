@@ -26,18 +26,7 @@ def get_all_verificacoes(user):
 
         verificacoes_total = db.collection('accounts').document(Account_Verificacoes).collection('equipe').document('equipes_criadas').collection('all_data').document(equipeId).collection('verificacoes').get()
         
-
         for v in verificacoes_total:
-            itens = db.collection('accounts').document(Account_Verificacoes).collection('equipe').document('equipes_criadas').collection('all_data').document(equipeId).collection('verificacoes').document(v.id).collection('todos_itens').get()
-
-            for item in itens:
-                list_itens.append({
-                    'comentario' : item.get('comentario'),
-                    'images' : item.get('images'),
-                    'pergunta' : item.get('pergunta'),
-                    'situacao' : item.get('situacao'),
-                })
-
             list_verificacoes.append({
                 'uid': v.id, 
                 'aplicado_por': v.get('aplicado_por'), 
@@ -56,14 +45,13 @@ def get_all_verificacoes(user):
                 'total_nc': v.get('total_nc'), 
                 'total_na': v.get('total_na'),
                 'uid_checklist': v.get('uid_checklist'),
-                'itens': list_itens,
+                # 'itens': list_itens,
                 'pdf': v.get('pdf'),
             })
 
-            print(jsonify(list_verificacoes))
-
         response = jsonify(list_verificacoes)
         return response, 200
+        
     except Exception as e:
         response = jsonify({'erro': 'Erro. Não foi possível acessar as verificações dessa conta.' + str(e)})
         return response, 500

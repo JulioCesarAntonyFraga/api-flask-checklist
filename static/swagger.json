@@ -1,0 +1,426 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "Documentação da API Auto checklist",
+      "version": "1.0.0",
+      "title": "Auto checklist API",
+      "contact": {
+        "email": "pawaresoftwares@gmail.com"
+      },
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "tags": [
+      {
+        "name": "Auto checklist",
+        "description": "API para integração com o sistema de checklists Paware"
+      }
+    ],
+    "paths": {
+      "/pawaresoftwares/api/auth/login/": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Pega o token de autenticação e informações do usuário",
+          "requestBody": {
+            "description": "Book Request Post Object",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/login"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/loginResponse"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução.",
+              "schema": {
+                "$ref": "#/components/schemas/erro"
+              }
+            }
+          }
+        }
+      },
+      "/pawaresoftwares/api/verificacoes/obter-por-id/?id={id}": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the cat that we want to match",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "security":[
+            {
+              "bearerAuth":[]
+            }
+          ],
+          "tags": [
+            "Verificação"
+          ],
+          "summary": "Pega uma verificação por ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "Id da verificação"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/verificacao"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução."
+            },
+            "404": {
+              "description": "Não achou a verificação."
+            }
+          }
+        }
+      },
+      "/pawaresoftwares/api/checklists/obter-por-id/?id={id}": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID da checklist",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "security":[
+            {
+              "bearerAuth":[]
+            }
+          ],
+          "tags": [
+            "Checklist"
+          ],
+          "summary": "Pega uma checklist por ID",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "Id da verificação"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/checklist"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução."
+            },
+            "404": {
+              "description": "Não achou a verificação."
+            }
+          }
+        }
+      },
+      "/pawaresoftwares/api/checklists/obter-todos/": {
+        "get": {
+          "security":[
+            {
+              "bearerAuth":[]
+            }
+          ],
+          "tags": [
+            "Checklist"
+          ],
+          "summary": "Pegar todas as checklists de uma conta",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/checklist"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução."
+            },
+            "404": {
+              "description": "Não achou a verificação."
+            }
+          }
+        }
+      },
+      "/pawaresoftwares/api/verificacoes/obter-todos/": {
+        "get": {
+          "security":[
+            {
+              "bearerAuth":[]
+            }
+          ],
+          "tags": [
+            "Verificação"
+          ],
+          "summary": "Pegar todas as verificações de uma conta",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/verificacao"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução."
+            },
+            "404": {
+              "description": "Não achou a verificação."
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes":{
+        "bearerAuth":{
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "schemas": {
+        "erro": {
+          "properties": {
+            "mensagem": {
+              "type": "string"
+            }
+          }
+        },
+        "login": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "senha": {
+              "type": "string",
+              "format": "password"
+            }
+          }
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "uid": {
+              "type": "string"
+            },
+            "userName": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            }
+          }
+        },
+        "loginResponse": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "user": {
+              "type": "object",
+              "$ref": "#/components/schemas/user" 
+            }
+          }
+        },
+        "item_verificacao":{
+          "type": "object",
+          "properties": {
+            "comentario": {
+              "type": "string"
+            },
+            "images": {
+              "type": "string"
+            },
+            "pergunta": {
+              "type": "string"
+            },
+            "situacao": {
+              "type": "string"
+            }
+          }
+        },
+        "pergunta_checklist":{
+          "type": "object",
+          "properties": {
+            "uid": {
+              "type": "string"
+            },
+            "pergunta": {
+              "type": "string"
+            },
+            "images": {
+              "type": "array",
+              "items":{
+                "type":"string"
+              }
+            }
+          }
+        },
+        "checklist":{
+          "type": "object",
+          "properties": {
+            "uid": {
+              "type": "string"
+            },
+            "deleted_categoria": {
+              "type": "bool"
+            },
+            "assunto": {
+              "type": "string"
+            },
+            "numero": {
+              "type": "string"
+            },
+            "descricao": {
+              "type": "string"
+            },
+            "revisao": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "perguntas": {
+              "type": "array",
+              "items":{
+                "type":"object",
+                "$ref": "#/components/schemas/pergunta_checklist"
+              }
+            },
+            "type_checklist": {
+              "type": "string"
+            },
+            "itens": {
+              "type": "string"
+            }
+          }
+        },
+        "verificacao": {
+          "type": "object",
+          "properties": {
+            "uid": {
+              "type": "string"
+            },
+            "aplicado_por": {
+              "type": "string"
+            },
+            "uid_account": {
+              "type": "string"
+            },
+            "cargo": {
+              "type": "string"
+            },
+            "obraDP": {
+              "type": "string"
+            },
+            "nome_auditor": {
+              "type": "string"
+            },
+            "empresa": {
+              "type": "string"
+            },
+            "assinatura": {
+              "type": "string"
+            },
+            "assunto": {
+              "type": "string"
+            },
+            "localInspencao": {
+              "type": "string"
+            },
+            "referencia": {
+              "type": "string"
+            },
+            "data_checklist": {
+              "type": "string"
+            },
+            "name_checklist": {
+              "type": "string"
+            },
+            "total_c": {
+              "type": "string"
+            },
+            "total_nc": {
+              "type": "string"
+            },
+            "total_na": {
+              "type": "string"
+            },
+            "uid_checklist": {
+              "type": "string"
+            },
+            "pdf": {
+              "type": "string"
+            },
+            "itens": {
+              "type": "array",
+              "items":{
+                "type":"object",
+                "$ref": "#/components/schemas/item_verificacao"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

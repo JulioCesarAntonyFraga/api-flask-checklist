@@ -26,15 +26,15 @@ def get_all_checklists(user):
  
     try:
         for c in Checklists:
-            perguntas_Checklists = db.collection('accounts').document(Account_Checklists).collection('equipe').document('equipes_criadas').collection('all_data').document(equipeId).collection('checklists').document(c.id).collection('perguntas').get()
-            for p in perguntas_Checklists:
-                details_perguntas = db.collection('accounts').document(Account_Checklists).collection('equipe').document('equipes_criadas').collection('all_data').document(equipeId).collection('checklists').document(c.id).collection('perguntas').document(p.id).get()
+            # perguntas_Checklists = db.collection('accounts').document(Account_Checklists).collection('equipe').document('equipes_criadas').collection('all_data').document(equipeId).collection('checklists').document(c.id).collection('perguntas').get()
+            # for p in perguntas_Checklists:
+            #     details_perguntas = db.collection('accounts').document(Account_Checklists).collection('equipe').document('equipes_criadas').collection('all_data').document(equipeId).collection('checklists').document(c.id).collection('perguntas').document(p.id).get()
                 
-                list_perguntas.append({
-                    'uid_pergunta': p.id,
-                    'pergunta': details_perguntas.get('pergunta'),
-                    'images': details_perguntas.get('images'), 
-                })
+            #     list_perguntas.append({
+            #         'uid_pergunta': p.id,
+            #         'pergunta': details_perguntas.get('pergunta'),
+            #         'images': details_perguntas.get('images'), 
+            #     })
 
             dict_checklists = {
                 'uid_checklist': c.id, 
@@ -43,7 +43,7 @@ def get_all_checklists(user):
                 'numero': c.get('numero'),  
                 'revisao': c.get('revisao'), 
                 'title': c.get('title'), 
-                'itens': len(perguntas_Checklists),
+                # 'itens': len(perguntas_Checklists),
                 'type_checklist': c.get('type_checklist'),
                 'perguntas': list_perguntas,}
 
@@ -79,12 +79,12 @@ def get_checklist(user):
         for p in perguntas_Checklists:
             list_perguntas.append(
             {
-                'uid_pergunta': p.id,
+                'uid': p.id,
                 'pergunta': p.get('pergunta'),
                 'images': p.get('images'),
             })
         dict_checklists = {
-            'uid_checklist': Checklist_Firebase.id, 
+            'uid': Checklist_Firebase.id, 
             'deleted_categoria': Checklist_Firebase.get('deleted_categoria'), 
             'assunto': Checklist_Firebase.get('assunto'),  
             'numero': Checklist_Firebase.get('numero'),  
