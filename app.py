@@ -62,6 +62,72 @@ def token_required(f):
         return f(user, *args, **kwargs)
     return decorated
 
+
+#####METODO PARA PEGAR TODAS AS VERIFICACOES############
+@app.route('/pawaresoftwares/api/auth/refresh-token/', methods=['POST'])
+def Route_refresh_token():
+    try:
+        token = str(request.args['refreshToken'])
+    except:
+        return jsonify({'erro': 'Nenhum token recebido !!'}), 401
+
+    # return 401 if token is not passed
+    if not token:
+        return jsonify({'erro': 'Nenhum token recebido !!'}), 401
+    
+    # jwt is passed in the request header
+    if 'Bearer' in token:
+        token = token.replace('Bearer ', '')
+
+    try:
+        # decoding the payload to fetch the stored details
+        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])  
+
+    except Exception as e:
+        return jsonify({
+            'erro': 'Algum erro ocorreu: ' + str(e)
+        }), 401
+
+    if data['isRefreshToken'] != True:
+        return jsonify({
+            'erro': 'Algum erro ocorreu: Este não é um refresh token.'
+        }), 401  
+
+    user = {
+        "uid": data['uid'],
+        "email": data['email'],
+        "userName": data['userName'],
+    }
+
+    newToken = jwt.encode(
+            {
+                'uid': user['uid'], 
+                'userName': user['userName'], 
+                'email': user['email'],
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            },secret_key)
+
+    newRefreshToken = jwt.encode(
+        {
+            'uid': user['uid'], 
+            'userName': user['userName'], 
+            'email': user['email'],
+            'isRefreshToken': True,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=40)
+        },secret_key)
+        
+    return jsonify(
+        {
+            'user': 
+                {
+                    'uid': user['uid'], 
+                    'userName': user['userName'], 
+                    'email': user['email'],
+                }, 
+            'token': newToken,
+            'refreshToken': newRefreshToken
+        })
+
 #####METODO PARA PEGAR TODAS AS VERIFICACOES############
 @app.route('/pawaresoftwares/api/verificacoes/obter-todos/', methods=['GET'])
 @token_required

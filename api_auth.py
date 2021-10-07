@@ -17,8 +17,33 @@ def Login():
         userToken = auth_pyrebase.get_account_info(user['idToken'])
         userId = userToken['users'][0]['localId']
         account = db.collection('accounts').document(userId).get()
-        token = jwt.encode({'uid': userId, 'userName': account.get('name'), 'email': json_data['email'],'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},secret_key)
-        return jsonify({'user': {'uid': userId, 'userName': account.get('name'), 'email': json_data['email']}, 'token': token})
+        token = jwt.encode(
+            {
+                'uid': userId, 
+                'userName': account.get('name'), 
+                'email': json_data['email'],
+                'isRefreshToken': False,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            },secret_key)
+        refreshToken = jwt.encode(
+            {
+                'uid': userId, 
+                'userName': account.get('name'), 
+                'email': json_data['email'],
+                'isRefreshToken': True,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=40)
+            },secret_key)
+        return jsonify(
+            {
+                'user': 
+                    {
+                        'uid': userId, 
+                        'userName': account.get('name'), 
+                        'email': json_data['email']
+                    }, 
+                'token': token,
+                'refreshToken': refreshToken
+            })
     except Exception as e:
         response = jsonify({'erro': 'Usuário ou senha incorretos' + str(e)})
         return response, 401

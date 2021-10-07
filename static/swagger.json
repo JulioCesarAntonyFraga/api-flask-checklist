@@ -26,7 +26,7 @@
           ],
           "summary": "Pega o token de autenticação e informações do usuário",
           "requestBody": {
-            "description": "Book Request Post Object",
+            "description": "Objeto JSON de login",
             "required": true,
             "content": {
               "application/json": {
@@ -67,13 +67,92 @@
           }
         }
       },
+      "/pawaresoftwares/api/auth/refresh-token/?refreshToken={refreshToken}": {
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "in": "path",
+            "required": true,
+            "description": "refresh token",
+            "type": "string"
+          }
+        ],
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Gera um novo token sem necessidade de login, apenas um refresh token",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "refreshToken",
+              "required": true,
+              "description": "refreshToken"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/loginResponse"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Não autorizado.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/pawaresoftwares/api/verificacoes/obter-por-id/?id={id}": {
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "ID of the cat that we want to match",
+            "description": "Id da verificação que será retornada",
             "type": "string"
           }
         ],
@@ -122,6 +201,20 @@
             },
             "404": {
               "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Não autorizado.",
               "content": {
                 "application/json": {
                   "schema": {
