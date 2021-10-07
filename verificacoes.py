@@ -45,7 +45,6 @@ def get_all_verificacoes(user):
                 'total_nc': v.get('total_nc'), 
                 'total_na': v.get('total_na'),
                 'uid_checklist': v.get('uid_checklist'),
-                # 'itens': list_itens,
                 'pdf': v.get('pdf'),
             })
 
@@ -79,6 +78,7 @@ def get_verificacao(user):
 
         for item in itens:
             list_itens.append({
+                'uid': item.id,
                 'comentario' : item.get('comentario'),
                 'images' : item.get('images'),
                 'pergunta' : item.get('pergunta'),

@@ -6,7 +6,6 @@ from flask import Flask, request
 import datetime
 import jwt
 from api_auth import *
-from perguntas import *
 from verificacoes import *
 from api_firebase import *
 from checklists import *
@@ -34,15 +33,18 @@ app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = None
-        
+        try:
+            token = request.headers['authorization']
+        except:
+            return jsonify({'erro': 'Nenhum token recebido !!'}), 401
+
         # return 401 if token is not passed
         if not token:
             return jsonify({'erro': 'Nenhum token recebido !!'}), 401
         
         # jwt is passed in the request header
         if 'Bearer' in request.headers['authorization']:
-            token = request.headers['authorization'].replace('Bearer ', '')
+            token = token.replace('Bearer ', '')
 
         try:
             # decoding the payload to fetch the stored details
@@ -84,19 +86,13 @@ def Route_get_all_checklists(user):
 def Route_get_checklist(user):
     return get_checklist(user)
 
-####METODO PARA PEGAR TODAS PERGUNTAS DE UMA CHECKLIST############
-@app.route('/pawaresoftwares/api/perguntas/obter-todos/', methods=['GET'])
-@token_required
-def Route_get_all_perguntas(user):
-    return get_all_perguntas(user)
-
 ####METODO PARA PEGAR TODOS OS PLANOS DE AÇÃO############
 @app.route('/pawaresoftwares/api/planos-de-acao/obter-todos/', methods=['GET'])
 @token_required
 def Route_get_all_planos_de_acao(user):
     return get_all_plano_de_acao(user)
 
-####METODO PARA PEGAR UM O PLANO DE AÇÃO############
+####METODO PARA PEGAR UM PLANO DE AÇÃO############
 @app.route('/pawaresoftwares/api/planos-de-acao/obter-por-id/', methods=['GET'])
 @token_required
 def Route_get_plano_de_acao(user):

@@ -66,7 +66,8 @@ def get_plano_de_acao(user):
 
         for pergunta in perguntas:
             list_perguntas.append({
-                'perguntas_plano_de_acao' : pergunta.get('perguntas_plano_de_acao'),
+                'uid': pergunta.id,
+                'pergunta_plano_de_acao' : pergunta.get('perguntas_plano_de_acao'),
             })
 
         plano_de_acao_dict = {

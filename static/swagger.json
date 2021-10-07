@@ -52,8 +52,16 @@
             },
             "500": {
               "description": "Falha na execução.",
-              "schema": {
-                "$ref": "#/components/schemas/erro"
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
               }
             }
           }
@@ -99,10 +107,32 @@
               }
             },
             "500": {
-              "description": "Falha na execução."
+              "description": "Falha na execução.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             },
             "404": {
-              "description": "Não achou a verificação."
+              "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -147,10 +177,32 @@
               }
             },
             "500": {
-              "description": "Falha na execução."
+              "description": "Falha na execução.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             },
             "404": {
-              "description": "Não achou a verificação."
+              "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -182,10 +234,32 @@
               }
             },
             "500": {
-              "description": "Falha na execução."
+              "description": "Falha na execução.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             },
             "404": {
-              "description": "Não achou a verificação."
+              "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -217,10 +291,159 @@
               }
             },
             "500": {
-              "description": "Falha na execução."
+              "description": "Falha na execução.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             },
             "404": {
-              "description": "Não achou a verificação."
+              "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/pawaresoftwares/api/planos-de-acao/obter-por-id/?id={id}": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do plano de ação",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "security":[
+            {
+              "bearerAuth":[]
+            }
+          ],
+          "tags": [
+            "Plano de ação"
+          ],
+          "summary": "Pega um plano de ação por id",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "description": "Id do planod e ação"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/plano_de_acao"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/pawaresoftwares/api/planos-de-acao/obter-todos/": {
+        "get": {
+          "security":[
+            {
+              "bearerAuth":[]
+            }
+          ],
+          "tags": [
+            "Plano de ação"
+          ],
+          "summary": "Pegar todos os planos de ação de uma conta",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/plano_de_acao"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Falha na execução.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Não achou a verificação.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "$ref": "#/components/schemas/erro"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -285,6 +508,9 @@
         "item_verificacao":{
           "type": "object",
           "properties": {
+            "uid": {
+              "type": "string"
+            },
             "comentario": {
               "type": "string"
             },
@@ -296,6 +522,38 @@
             },
             "situacao": {
               "type": "string"
+            }
+          }
+        },
+        "pergunta_plano_de_acao":{
+          "type": "object",
+          "properties": {
+            "uid": {
+              "type": "string"
+            },
+            "pergunta_plano_de_acao": {
+              "type": "string"
+            }
+          }
+        },
+        "plano_de_acao":{
+          "type": "object",
+          "properties": {
+            "uid": {
+              "type": "string"
+            },
+            "descricao": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "perguntas": {
+              "type": "array",
+              "items":{
+                "type": "object",
+                "$ref": "#/components/schemas/pergunta_plano_de_acao" 
+              }
             }
           }
         },
