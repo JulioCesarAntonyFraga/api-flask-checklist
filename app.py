@@ -49,6 +49,12 @@ def token_required(f):
         try:
             # decoding the payload to fetch the stored details
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            
+            if data['isRefreshToken'] != False:
+                return jsonify({
+                    'erro': 'Algum erro ocorreu: Este token não é válido'
+                }), 401
+
             user = {
                 "email": data['email'],
                 "uid": data['uid'],
@@ -104,6 +110,7 @@ def Route_refresh_token():
                 'uid': user['uid'], 
                 'userName': user['userName'], 
                 'email': user['email'],
+                'isRefreshToken': False,
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
             },secret_key)
 
